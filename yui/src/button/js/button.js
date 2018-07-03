@@ -94,7 +94,9 @@ Y.namespace('M.atto_embedquestion').Button = Y.Base.create('button', Y.M.editor_
         dialogue = this.getDialogue({
             headerContent: M.util.get_string('pluginname', COMPONENTNAME),
             focusAfterHide: true,
-            bodyContent: '<div class="atto-embedquestion-content"><div class="atto-embedquestion-question-selector-wrapper"><img class="icon " src="' + loadersrc + '" alt="Loading..." title="Loading..."></div><button class="atto-embedquestion-submit">Embed qcode</button></div>'
+            bodyContent: '<div class="atto-embedquestion-content"><div class="atto-embedquestion-question-selector-wrapper">' +
+                '<img class="icon " src="' + loadersrc + '" alt="Loading..." title="Loading...">' +
+                '</div><button class="atto-embedquestion-submit">Embed qcode</button></div>' //  TODO: pass langauge string through
         }, true);
         qForm.setRootNode('.atto-embedquestion-question-selector-wrapper');//does not work with this.qForm!
         dialogue.show();
@@ -118,7 +120,7 @@ Y.namespace('M.atto_embedquestion').Button = Y.Base.create('button', Y.M.editor_
         //var character = e.target.getData('character');
         var formData = qForm.getQformData();//not working yet
         // use formData to create a qcode.
-        var qcode = '{Q{cat-id-num/que-id-num|id=3|courseid=31}Q}'+formData.qcatidnum;//TODO
+        var qcode = '{Q{' + formData.catidnum +'/' + formData.queidnum + '|id=3|courseid=' + formData.courseid + '}Q}';//TODO: id and courseid to be done properly.
 
         // Hide the dialogue.
         this.getDialogue({

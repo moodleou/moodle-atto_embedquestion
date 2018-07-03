@@ -24,6 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once($CFG->libdir . '/questionlib.php');
+use filter_embedquestion\form\embed_options_form;
+
 /**
  * Initialise the js strings required for this module.
  */
@@ -41,7 +44,7 @@ function atto_embedquestion_strings_for_js() {
  * @param stdClass $fpoptions - unused.
  */
 function atto_embedquestion_params_for_js($elementid, $options, $fpoptions) {
-    //global $OUTPUT;
+    global $CFG, $OUTPUT;
     $context = $options['context'];
     if (!$context) {
         return array('enablebutton' => false, 'contextid' => null, 'courseid' => null, 'loadersrc' => null);
@@ -52,7 +55,8 @@ function atto_embedquestion_params_for_js($elementid, $options, $fpoptions) {
     }
     $enablebutton = has_capability('moodle/question:useall', $context);//TODO (all/mine) not add?
     //$loadersrc = $OUTPUT->pix_icon('y/loading');
-    $loadersrc = 'https://jb23347.vledev3.open.ac.uk/ov/theme/image.php/osep/core/1530199291/y/loading';
+    //$loadersrc = 'https://jb23347.vledev3.open.ac.uk/ov/theme/image.php/osep/core/1530199291/y/loading';
+    $loadersrc = $CFG->wwwroot .'/theme/image.php/osep/core/1530199291/y/loading';
 
     return array('enablebutton' => $enablebutton, 'contextid' => $context->id, 'courseid' => $courseid, 'loadersrc' => $loadersrc);
 }
@@ -68,21 +72,19 @@ function atto_embedquestion_params_for_js($elementid, $options, $fpoptions) {
  */
 function atto_embedquestion_output_fragment_questionselector($args) {
     global $CFG;
-    require_once($CFG->dirroot . '/lib/editor/atto/plugins/embedquestion/classes/local/qform.php');
+    require_once($CFG->dirroot . '/filter/embedquestion/classes/form/embed_options_form.php');
     $html = '';
     $data = [];
-    $courseid = isset($args['courseid']) ? clean_param($args['courseid'], PARAM_INT) : null;
-    $data['courseid'] = 18;
+    $courseid = isset($args['courseId']) ? clean_param($args['courseId'], PARAM_INT) : null;
     $hasformdata = isset($args['formdata']) && !empty($args['formdata']);
-    //$context = context_course::instance($courseid);
-    $context = context_module::instance(140);
+    $context = context_course::instance($courseid);
     $data['contextid'] = $context->id;
+    $data['courseid'] = $courseid;
 
     if ($hasformdata) {
         parse_str(clean_param($args['formdata'], PARAM_TEXT), $data);
     }
-
-    $mform = new qform(null, null, 'post', '', null, true, $data);
+    $mform = new embed_options_form(null, ['context' => $context]);
 
     // If the user is on course context and is allowed to add course events set the event type default to course.
     //if ($courseid != SITEID && !empty($allowed->courses)) {
