@@ -54,14 +54,15 @@ Y.namespace('M.atto_embedquestion').Button = Y.Base.create('button', Y.M.editor_
     _currentSelection: null,
 
     qForm: null,
+    listening: false,
 
     initializer: function() {
-        var contextId, elementId;
+        var contextId, courseId;
         if (!this.get('enablebutton')) {
             return;
         }
         contextId = this.get('contextid');
-        elementId = this.get('elementid');
+        courseId = this.get('courseid');
         this.addButton({
             icon: 'icon',
             iconComponent: COMPONENTNAME,
@@ -71,7 +72,7 @@ Y.namespace('M.atto_embedquestion').Button = Y.Base.create('button', Y.M.editor_
         require(['atto_embedquestion/qform'], function(qform) {
             //qform.setCourseId(18);//TODO this.get('courseid');//not available for now
             qform.setContextId(contextId);
-            qform.setElementId(elementId);
+            qform.setCourseId(courseId);
             qForm = qform;
         });
     },
@@ -83,6 +84,7 @@ Y.namespace('M.atto_embedquestion').Button = Y.Base.create('button', Y.M.editor_
      * @private
      */
     _displayDialogue: function() {
+        var loadersrc, dialogue;
         // Store the current selection.
         this._currentSelection = this.get('host').getSelection();
 
@@ -90,61 +92,35 @@ Y.namespace('M.atto_embedquestion').Button = Y.Base.create('button', Y.M.editor_
             return;
         }
 
-        var dialogue = this.getDialogue({
+        loadersrc = this.get('loadersrc');
+        dialogue = this.getDialogue({
             headerContent: M.util.get_string('pluginname', COMPONENTNAME),
             focusAfterHide: true,
-            bodyContent: '<div class="atto-embedquestion-question-selector-wrapper"></div>'
+            bodyContent: '<div class="atto-embedquestion-content"><div class="atto-embedquestion-question-selector-wrapper"><img class="icon " src="' + loadersrc + '" alt="Loading..." title="Loading..."></div><button class="atto-embedquestion-submit">Embed qcode</button></div>'
         }, true);
         qForm.setRootNode('.atto-embedquestion-question-selector-wrapper');//does not work with this.qForm!
-        qForm.setCurrentSelection(this._currentSelection);//TODO this is sent to amd code in case it can do the inserting, otherwise remove.
-        // dialogue.set('bodyContent', qForm.getQform()).show();//works when a string is returned by getQform.
-        // dialogue.set('bodyContent', this._getDialogueContent()).show();//not currently working.
         dialogue.show();
         qForm.insertQform();
-        //TODO is it possible to set a listener for the selector embed button after the form has been loaded (calling insertQcode)?
-        //TODO alternatively listen for special event that the form could trigger.
-    },
-
-    /**
-     * Generates the content of the dialogue, attaching event listeners to
-     * the content.
-     *
-     * @method _getDialogueContent
-     * @return {Node} Node containing the dialogue content
-     * @private
-     */
-    _getDialogueContent: function() {
-        // This is from the equivalent file for the emoticon atto plugin, and shows how to attach event listeners.
-        // var template = Y.Handlebars.compile(TEMPLATE),
-        //     content = Y.Node.create(template({
-        //         component: COMPONENTNAME,
-        //         elementid: this.get('host').get('elementid'),
-        //         CSS: CSS
-        //     }));
-        // content.one(SELECTORS.BUTTON).on('click', this._insertQcode, this);//works, but TEMPLATE is now removed.
-        // Alternative.
-        // var a = qForm.getQform();
-        // var content = Y.Node.create(a);
-        // content.one(SELECTORS.BUTTON).on('click', this._insertQcode, this);//also works, but only if getQform does not return a promise.
-        // Possibly useful:
-        //content.delegate('click', this._insertQcode, SELECTORS.BUTTON, this);
-        //content.delegate('key', this._insertQcode, '32', SELECTORS.BUTTON, this);
-        //return content;
+        if (!this.listening) {
+            this.listening = true;
+            var submit = Y.all('.atto-embedquestion-submit');
+            submit.on('click', this.insertQcode, this);
+            //content.delegate('key', this._insertQcode, '32', SELECTORS.BUTTON, this);
+        }
     },
 
     /**
      * Insert the selected question code into the editor.
      *
-     * @method _insertQcode
+     * @method insertQcode
      * @param {EventFacade} e
      * @private
      */
-    _insertQcode: function(e) {
-        //TODO this works as a proof of concept, but how to initiate it?
+    insertQcode: function(e) {
         //var character = e.target.getData('character');
         var formData = qForm.getQformData();//not working yet
         // use formData to create a qcode.
-        var qcode = '{Q{cat-id-num/que-id-num|id=3|courseid=31}Q}';
+        var qcode = '{Q{cat-id-num/que-id-num|id=3|courseid=31}Q}'+formData.qcatidnum;//TODO
 
         // Hide the dialogue.
         this.getDialogue({
@@ -174,7 +150,8 @@ Y.namespace('M.atto_embedquestion').Button = Y.Base.create('button', Y.M.editor_
             value: false
         },
         contextid: {value: false},
-        elementid: {value: false}
+        courseid: {value: false},
+        loadersrc: {value: false}
     }
 });
 

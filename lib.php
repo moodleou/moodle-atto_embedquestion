@@ -41,14 +41,20 @@ function atto_embedquestion_strings_for_js() {
  * @param stdClass $fpoptions - unused.
  */
 function atto_embedquestion_params_for_js($elementid, $options, $fpoptions) {
+    //global $OUTPUT;
     $context = $options['context'];
     if (!$context) {
-        $context = context_system::instance();
+        return array('enablebutton' => false, 'contextid' => null, 'courseid' => null, 'loadersrc' => null);
+    }
+    $courseid = $context->get_course_context(true)->instanceid;
+    if (!$courseid) {
+        return array('enablebutton' => false, 'contextid' => null, 'courseid' => null, 'loadersrc' => null);
     }
     $enablebutton = has_capability('moodle/question:useall', $context);//TODO (all/mine) not add?
-    //TODO if courseid is required it will need to be calculated here and passed through.
+    //$loadersrc = $OUTPUT->pix_icon('y/loading');
+    $loadersrc = 'https://jb23347.vledev3.open.ac.uk/ov/theme/image.php/osep/core/1530199291/y/loading';
 
-    return array('elementid' => $elementid, 'enablebutton' => $enablebutton, 'contextid' => $context->id);
+    return array('enablebutton' => $enablebutton, 'contextid' => $context->id, 'courseid' => $courseid, 'loadersrc' => $loadersrc);
 }
 
 /**

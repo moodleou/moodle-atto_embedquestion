@@ -56,7 +56,7 @@ class qform extends moodleform {
         $mform->setType('aname', PARAM_TEXT);
 
         //$this->add_action_buttons();//not working for some reason!
-        $mform->addElement('submit', 'embedquestion', 'Embed this question');
+        //$mform->addElement('submit', 'embedquestion', 'Embed this question');
 
         // Add the javascript required to enhance this mform.
         //$PAGE->requires->js_call_amd('core_calendar/event_form', 'init', [$mform->getAttribute('id')]);

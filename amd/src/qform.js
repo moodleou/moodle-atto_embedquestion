@@ -34,9 +34,8 @@ define(['jquery', 'core/notification', 'core/fragment', 'core/templates'], funct
         reloadingBody: false,
         bodyPromise: false,
         rootNode: false,
-        elementId: false,
         contextId: false,
-        currentSelection: false
+        courseId: false
     };
 
     /**
@@ -48,61 +47,11 @@ define(['jquery', 'core/notification', 'core/fragment', 'core/templates'], funct
         setRootNode: function(rootnode) {
             priv.rootNode = $(rootnode);
         },
-        setElementId: function(elementid) {
-            priv.elementId = elementid;
-        },
         setContextId: function(contextid) {
             priv.contextId = contextid;
         },
-        setCurrentSelection: function(currentselection) {
-            priv.currentSelection = currentselection;
-        },
-
-        /**
-         * Temp experiment - not working - remove me.
-         * This uses an ajax function to get the question selection form.
-         *
-         * @param {object} formData any data already set in the form
-         * @returns {object} a promise or wrapper containing html and javascript for the question selection form
-         */
-        getQform: function(formData) {
-            var args = {};
-            if (priv.reloadingBody) {
-                return priv.bodyPromise;
-            }
-            priv.reloadingBody = true;
-            //t.disableButtons();//TODO
-            // if (priv.courseId) {
-            //     args.courseid = priv.courseId;
-            // }
-            // if (priv.qcatIdNum) {
-            //     args.qcatidnum = priv.qcatIdNum;
-            // }
-            // if (priv.qIdNum) {
-            //     args.qidnum = priv.qIdNum;
-            // }
-            if (typeof formData !== 'undefined') {
-                args.formdata = formData;
-            }
-
-            priv.bodyPromise = Fragment.loadFragment('atto_embedquestion', 'questionselector', priv.contextId, args);
-
-            priv.bodyPromise
-                .done(function(html, js) {
-                    //t._niceReplaceNodeContents(priv.rootNode, html, js);
-                    //t.enableButtons();//TODO?
-                    //return;
-                    return html;//this never gets returned!
-                })
-                .fail(Notification.exception)
-                .always(function() {
-                    priv.reloadingBody = false;
-                    return;
-                })
-                .fail(Notification.exception);
-
-            return priv.bodyPromise;
-            //return 'something';//just for testing!
+        setCourseId: function(courseid) {
+            priv.courseId = courseid;
         },
 
         /**
@@ -111,18 +60,10 @@ define(['jquery', 'core/notification', 'core/fragment', 'core/templates'], funct
          */
         insertQform: function() {
             var args = {};
-            // Start with a loading spinner.
-            Templates.render('mod_assign/loading', {}).done(function(html, js) {
-                //window.alert(html);//test of functionality only - remove me.
+            // Replace with the form.
+            Fragment.loadFragment('atto_embedquestion', 'questionselector', priv.contextId, args).done(function(html, js) {
                 t.niceReplaceNodeContents(priv.rootNode, html, js).done(function() {
-                    // Replace with the form.
-                    Fragment.loadFragment('atto_embedquestion', 'questionselector', priv.contextId, args).done(function(html, js) {
-                        t.niceReplaceNodeContents(priv.rootNode, html, js).done(function() {
-                            // Need to add event listeners here.
-                            // Currently clicking on the Embed this question button gives an ajax error.
-                            $('#' + priv.elementId + ' input[name="embedquestion"]').on('click', t.embedQuestionCode);
-                        });
-                    }).fail(Notification.exception);
+                    $('#' + priv.elementId + ' input[name="embedquestion"]').on('click', t.embedQuestionCode);
                 });
             }).fail(Notification.exception);
         },
@@ -138,29 +79,11 @@ define(['jquery', 'core/notification', 'core/fragment', 'core/templates'], funct
             return promise.promise();
         },
 
-        embedQuestionCode: function(e) {
-            e.preventDefault();
-            // calculate this code properly
-            var qcode = '{Q{cat-id-num/que-id-num|id=3|courseid=31}Q}';
-            // do the following here or in button.js using the return from getQformData?
-            // insert this in the right place
-            // close the dialogue
-            // mark the text area as changed
-            window.alert(qcode);
-            // Alternatively trigger an event that the yui button.js code can listen for.
-        },
-
         getQformData: function() {
-            //return this.getForm().serialize();
-            return '';
-        },
-
-        save: function() {
-            //not required?
-        },
-
-        registerEventListeners: function() {
-            //
+            var aname = priv.rootNode.find('#id_aname').val();//TODO
+            var out = {};
+            out.qcatidnum = aname;
+            return out;
         }
     };
 
