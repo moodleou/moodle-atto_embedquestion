@@ -24,12 +24,8 @@
  */
 
 var COMPONENTNAME = 'atto_embedquestion',
-    CSS = {
-        PARAM: 'atto_embedquestion_param'
-    },
-    SELECTORS = {
-        BUTTON: 'input[name="embedquestion"]'
-    }
+    WRAPPER = 'atto-embedquestion-question-selector-wrapper',
+    BUTTON = 'atto-embedquestion-submit-button';
 
 /**
  * Atto text editor embedquestion plugin.
@@ -42,97 +38,112 @@ var COMPONENTNAME = 'atto_embedquestion',
 Y.namespace('M.atto_embedquestion').Button = Y.Base.create('button', Y.M.editor_atto.EditorPlugin, [], {
 
     /**
-     * A reference to the current selection at the time that the dialogue
-     * was opened.
+     * A reference to the current selection range at the time that the dialogue was opened.
      *
-     * @property _currentSelection
      * @type Range
-     * @private
      */
-    _currentSelection: null,
+    currentSelection: null,
 
-    qForm: null,
-    listening: false,
+    /**
+     * A local variable ensuring some things are only added once.
+     */
+    doneOnce: false,
+    qForm: false,
 
     initializer: function() {
-        var contextId, courseId;
+        var contextId, elementId;
         if (!this.get('enablebutton')) {
             return;
         }
         contextId = this.get('contextid');
-        courseId = this.get('courseid');
+        elementId = this.get('elementid');
         this.addButton({
             icon: 'icon',
             iconComponent: COMPONENTNAME,
-            callback: this._displayDialogue
+            callback: this.displayDialogue
         });
+        Y.M.atto_embedquestion.form = {};
         // Initialise the amd javascript that will insert the moodle form in the dialogue.
+        // This needs to happen during init to make a reference to it available in later functions below.
         require(['atto_embedquestion/qform'], function(qform) {
-            //qform.setCourseId(18);//TODO this.get('courseid');//not available for now
             qform.setContextId(contextId);
-            qform.setCourseId(courseId);
-            qForm = qform;
+            // Note we need a reference to qform, but cannot use this.qForm as all the functions within
+            // this class are private so not accessible from AMD code. At least this is not a new global var.
+            Y.M.atto_embedquestion.form[elementId] = qform;
         });
     },
 
     /**
      * Display the question selector dialogue.
-     *
-     * @method _displayDialogue
-     * @private
      */
-    _displayDialogue: function() {
-        var loadersrc, dialogue;
-        // Store the current selection.
-        this._currentSelection = this.get('host').getSelection();
+    displayDialogue: function() {
+        var loader, dialogue, content, submit, elementId;
 
-        if (this._currentSelection === false) {
-            return;
-        }
+        this.currentSelection = this.get('host').getSelection();
 
-        loadersrc = this.get('loadersrc');
+        // The wrapper div's loading icon will be replaced with form contents.
+        // The submit button needs to be 'outside' the form to avoid an ajax submission of the form.
+        loader = M.util.image_url('y/loading');
+        content = '<div class="' + WRAPPER + '">' +
+            '<img class="icon " src="' + loader + '" alt="Loading..." title="Loading...">' +
+            '</div>' +
+            '<button class="' + BUTTON + '">' + M.util.get_string('embedqcode', COMPONENTNAME) + '</button>';
+
         dialogue = this.getDialogue({
             headerContent: M.util.get_string('pluginname', COMPONENTNAME),
             focusAfterHide: true,
-            bodyContent: '<div class="atto-embedquestion-content"><div class="atto-embedquestion-question-selector-wrapper">' +
-                '<img class="icon " src="' + loadersrc + '" alt="Loading..." title="Loading...">' +
-                '</div><button class="atto-embedquestion-submit">Embed qcode</button></div>' //  TODO: pass langauge string through
+            bodyContent: content
         }, true);
-        qForm.setRootNode('.atto-embedquestion-question-selector-wrapper');//does not work with this.qForm!
         dialogue.show();
-        qForm.insertQform();
-        if (!this.listening) {
-            this.listening = true;
-            var submit = Y.all('.atto-embedquestion-submit');
+
+        // Note it is important to only set the wrapper after the dialogue has been inserted in the DOM.
+        elementId = this.get('elementid');
+        if (!this.doneOnce) {
+            // Capture the reference to this version of the AMD code's form.
+            this.qForm = Y.M.atto_embedquestion.form[elementId];
+            this.qForm.setRootNode('.' + WRAPPER);
+        }
+        this.qForm.insertQform();
+
+        // Set the listener for the submit button (once).
+        if (!this.doneOnce) {
+            submit = Y.all('.' + BUTTON);
             submit.on('click', this.insertQcode, this);
-            //content.delegate('key', this._insertQcode, '32', SELECTORS.BUTTON, this);
+            this.doneOnce = true;
         }
     },
 
     /**
-     * Insert the selected question code into the editor.
-     *
-     * @method insertQcode
-     * @param {EventFacade} e
-     * @private
+     * Insert the selected question code into the editor textarea.
      */
-    insertQcode: function(e) {
-        //var character = e.target.getData('character');
-        var formData = qForm.getQformData();//not working yet
-        // use formData to create a qcode.
-        var qcode = '{Q{' + formData.catidnum +'/' + formData.queidnum + '|id=3|courseid=' + formData.courseid + '}Q}';//TODO: id and courseid to be done properly.
+    insertQcode: function() {
+        var formData, qcode, host, dialogueid;
+
+        dialogueid = this.getDialogue().get('id');
 
         // Hide the dialogue.
         this.getDialogue({
             focusAfterHide: null
         }).hide();
 
-        var host = this.get('host');
+        formData = this.qForm.getQformData();//TODO!
+
+        // Try removing the form from the dialogue so it cannot be confused with any other dialogue form.
+        Y.one('#' + dialogueid + ' div.' + WRAPPER + ' form').remove(true);
+
+        // need to do ajax to get $embedcode = question_options::get_embed_from_form_options($fromform); (filter/embedquestion/classes/question_options.php)
+        // with the critical bits $fromform->categoryidnumber and $fromform->questionidnumber
+        // {Q{QC1/Q2|50fce86349f0f7f952f8a0373eec883a0147e76a44945cc91ce68a207117b7b8}Q}
+        // Maybe this could be done in the AMD code?
+        // Maybe the AMD code could override the action on the form button to save creating our own button?
+        qcode = '{Q{' + formData.catidnum +'/' + formData.queidnum + '|0123456...' + '}Q}';//TODO add other elements from the form.
+
+        // The rest of this code works.
+        host = this.get('host');
 
         // Focus on the last point.
-        host.setSelection(this._currentSelection);
+        host.setSelection(this.currentSelection);
 
-        // And add the character.
         host.insertContentAtFocusPoint(qcode);
 
         // And mark the text area as updated.
@@ -140,17 +151,8 @@ Y.namespace('M.atto_embedquestion').Button = Y.Base.create('button', Y.M.editor_
     }
 }, {
     ATTRS: {
-        /**
-         * Whether the button should be displayed
-         *
-         * @attribute enablebutton
-         * @type Boolean
-         */
-        enablebutton: {
-            value: false
-        },
+        enablebutton: {value: false},
         contextid: {value: false},
-        courseid: {value: false},
-        loadersrc: {value: false}
+        elementid: {value: false}
     }
 });

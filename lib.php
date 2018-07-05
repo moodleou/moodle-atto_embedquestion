@@ -33,7 +33,7 @@ use filter_embedquestion\form\embed_options_form;
 function atto_embedquestion_strings_for_js() {
     global $PAGE;
 
-    $PAGE->requires->strings_for_js(array('pluginname'), 'atto_embedquestion');//This is used as the question selector dialogue title - at present.
+    $PAGE->requires->strings_for_js(['pluginname', 'embedqcode'], 'atto_embedquestion');
 }
 
 /**
@@ -44,21 +44,18 @@ function atto_embedquestion_strings_for_js() {
  * @param stdClass $fpoptions - unused.
  */
 function atto_embedquestion_params_for_js($elementid, $options, $fpoptions) {
-    global $CFG, $OUTPUT;
     $context = $options['context'];
     if (!$context) {
-        return array('enablebutton' => false, 'contextid' => null, 'courseid' => null, 'loadersrc' => null);
+        return array('enablebutton' => false, 'contextid' => null, 'elementid' => null);
     }
-    $courseid = $context->get_course_context(true)->instanceid;
-    if (!$courseid) {
-        return array('enablebutton' => false, 'contextid' => null, 'courseid' => null, 'loadersrc' => null);
+    // Get the course context, this is the only context we use.
+    $context = $context->get_course_context(true);
+    if (!$context) {
+        return array('enablebutton' => false, 'contextid' => null, 'elementid' => null);
     }
-    $enablebutton = has_capability('moodle/question:useall', $context);//TODO (all/mine) not add?
-    //$loadersrc = $OUTPUT->pix_icon('y/loading');
-    //$loadersrc = 'https://jb23347.vledev3.open.ac.uk/ov/theme/image.php/osep/core/1530199291/y/loading';
-    $loadersrc = $CFG->wwwroot .'/theme/image.php/osep/core/1530199291/y/loading';
+    $enablebutton = has_capability('moodle/question:useall', $context);
 
-    return array('enablebutton' => $enablebutton, 'contextid' => $context->id, 'courseid' => $courseid, 'loadersrc' => $loadersrc);
+    return array('enablebutton' => $enablebutton, 'contextid' => $context->id, 'elementid' => $elementid);
 }
 
 /**
@@ -67,40 +64,13 @@ function atto_embedquestion_params_for_js($elementid, $options, $fpoptions) {
  * Reference https://docs.moodle.org/dev/Fragment.
  * Based on similar function in mod/assign/lib.php.
  *
- * @param $args
+ * @param array $args Must contain contextid
  * @return null|string
  */
 function atto_embedquestion_output_fragment_questionselector($args) {
     global $CFG;
     require_once($CFG->dirroot . '/filter/embedquestion/classes/form/embed_options_form.php');
-    $html = '';
-    $data = [];
-    $courseid = isset($args['courseId']) ? clean_param($args['courseId'], PARAM_INT) : null;
-    $hasformdata = isset($args['formdata']) && !empty($args['formdata']);
-    $context = context_course::instance($courseid);
-    $data['contextid'] = $context->id;
-    $data['courseid'] = $courseid;
-
-    if ($hasformdata) {
-        parse_str(clean_param($args['formdata'], PARAM_TEXT), $data);
-    }
-    $mform = new embed_options_form(null, ['context' => $context]);
-
-    // If the user is on course context and is allowed to add course events set the event type default to course.
-    //if ($courseid != SITEID && !empty($allowed->courses)) {
-    //    $data['eventtype'] = 'course';
-    //    $data['courseid'] = $courseid;
-    //    $data['groupcourseid'] = $courseid;
-    //} else if (!empty($categoryid) && !empty($allowed->category)) {
-    //    $data['eventtype'] = 'category';
-    //    $data['categoryid'] = $categoryid;
-    //}
-    $mform->set_data($data);
-
-    if ($hasformdata) {
-        $mform->is_validated();
-    }
-
-    $html .= $mform->render();
-    return $html;
+    $context = context::instance_by_id($args['contextId']);
+    $mform = new embed_options_form(null, ['context' => $context, 'nosubmitbutton' => true]);
+    return $mform->render();
 }

@@ -24,3 +24,4 @@
 
 $string['pluginname'] = 'Embed question';
 $string['privacy:metadata'] = 'The Atto Embed question plugin does not store any personal data.';
+$string['embedqcode'] = 'Embed qcode';

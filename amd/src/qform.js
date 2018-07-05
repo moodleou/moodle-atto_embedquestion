@@ -29,8 +29,7 @@ define(['jquery', 'core/notification', 'core/fragment', 'core/templates'], funct
      */
     priv = {
         rootNode: false,
-        contextId: false,
-        courseId: false
+        contextId: false
     };
 
     /**
@@ -45,9 +44,6 @@ define(['jquery', 'core/notification', 'core/fragment', 'core/templates'], funct
         setContextId: function(contextid) {
             priv.contextId = contextid;
         },
-        setCourseId: function(courseid) {
-            priv.courseId = courseid;
-        },
 
         /**
          * This uses an ajax function to add the question selection form to the dialogue.
@@ -56,7 +52,6 @@ define(['jquery', 'core/notification', 'core/fragment', 'core/templates'], funct
         insertQform: function() {
             var args = {};
             args.contextId = priv.contextId;
-            args.courseId = priv.courseId;
 
             // Replace with the form.
             Fragment.loadFragment('atto_embedquestion', 'questionselector', priv.contextId, args).done(function (html, js) {
@@ -77,9 +72,8 @@ define(['jquery', 'core/notification', 'core/fragment', 'core/templates'], funct
 
         getQformData: function () {
             var out = {};
-            out.catidnum = priv.rootNode.find('#id_categoryidnumber').val();
+            out.catidnum = priv.rootNode.find('#id_categoryidnumber').val();//TODO!
             out.queidnum = priv.rootNode.find('#id_questionidnumber').val();
-            out.courseid = priv.courseId;
             return out;
         }
     };
