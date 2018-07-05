@@ -72,8 +72,21 @@ define(['jquery', 'core/notification', 'core/fragment', 'core/templates'], funct
 
         getQformData: function () {
             var out = {};
+            console.log(priv.rootNode);
             out.catidnum = priv.rootNode.find('#id_categoryidnumber').val();//TODO!
             out.queidnum = priv.rootNode.find('#id_questionidnumber').val();
+            out.behaviour = (priv.rootNode.find('#id_behaviour').val()) ? 'behaviour=' + priv.rootNode.find('#id_behaviour').val() : '';
+            out.maxmark = (priv.rootNode.find('#id_maxmark').val()) ? 'maxmark=' + priv.rootNode.find('#id_maxmark').val() : '';
+            out.variant = (priv.rootNode.find('#id_variant').val()) ? 'variant=' + priv.rootNode.find('#id_varian').val() : '';
+            out.correctness = (priv.rootNode.find('#id_correctness').val()) ? 'correctness=' + priv.rootNode.find('#id_correctness').val() : '';
+            out.marks = (priv.rootNode.find('#id_marks').val()) ? 'marks=' + priv.rootNode.find('#id_marks').val() : '';
+            out.markdp = (priv.rootNode.find('#id_markdp').val()) ? 'markdp=' + priv.rootNode.find('#id_markdp').val() : '';
+            out.feedback = (priv.rootNode.find('#id_feedback').val()) ? 'feedback=' + priv.rootNode.find('#id_feedback').val() : '';
+            out.generalfeedback = (priv.rootNode.find('#id_generalfeedback').val()) ? 'generalfeedback=' + priv.rootNode.find('#id_generalfeedback').val() : '';
+            out.rightanswer = (priv.rootNode.find('#id_rightanswer').val()) ? 'rightanswer=' + priv.rootNode.find('#id_rightanswer').val() : '';
+            out.history = (priv.rootNode.find('#id_history').val()) ? 'history=' + priv.rootNode.find('#id_history').val() : '';
+            out.token = '12345...';
+
             return out;
         }
     };

@@ -136,7 +136,19 @@ Y.namespace('M.atto_embedquestion').Button = Y.Base.create('button', Y.M.editor_
         // {Q{QC1/Q2|50fce86349f0f7f952f8a0373eec883a0147e76a44945cc91ce68a207117b7b8}Q}
         // Maybe this could be done in the AMD code?
         // Maybe the AMD code could override the action on the form button to save creating our own button?
-        qcode = '{Q{' + formData.catidnum +'/' + formData.queidnum + '|0123456...' + '}Q}';//TODO add other elements from the form.
+        qcode = '{Q{' + formData.catidnum + '/' + formData.queidnum + '|';
+        qcode += formData.behaviour ? formData.behaviour + '|' : '';
+        qcode += formData.maxmark ? formData.maxmark + '|' : '';
+        qcode += formData.variant ? formData.variant + '|' : '';
+        qcode += formData.correctness ? formData.correctness + '|' : '';
+        qcode += formData.marks ? formData.marks + '|' : '';
+        qcode += formData.markdp ? formData.markdp + '|' : '';
+        qcode += formData.feedback ? formData.feedback + '|' : '';
+        qcode += formData.generalfeedback ? formData.generalfeedback + '|' : '';
+        qcode += formData.rightanswer ? formData.rightanswer + '|' : '';
+        qcode += formData.history ? formData.history + '|' : '';
+
+        qcode += formData.token + '}Q}';
 
         // The rest of this code works.
         host = this.get('host');
