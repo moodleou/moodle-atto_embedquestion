@@ -1,0 +1,9 @@
+Atto editor embedquestion plugin
+
+To enable the embedquestion Atto editor plugin button to show please use this setup:
+
+System admin > Plugins > Text editors > Atto HTML editor > Atto toolbar settings
+Toolbar config (editor_atto|toolbar) Add 'embedquestion' to an appropriate place in the config setting, then save.
+
+Assuming you are logged in with a role that has the capability 'moodle/question:useall' on the course context
+then the button will be displayed whenever the Atto toolbar is displayed.

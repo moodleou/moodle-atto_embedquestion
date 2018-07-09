@@ -72,6 +72,8 @@ Y.namespace('M.atto_embedquestion').Button = Y.Base.create('button', Y.M.editor_
             // Note we need a reference to qform, but cannot use this.qForm as all the functions within
             // this class are private so not accessible from AMD code. At least this is not a new global var.
             Y.M.atto_embedquestion.form[elementId] = qform;
+            // Use just one dialogue, not one per instance of the Atto button.
+            Y.M.atto_embedquestion.dialogue = false;
         });
     },
 
@@ -79,7 +81,7 @@ Y.namespace('M.atto_embedquestion').Button = Y.Base.create('button', Y.M.editor_
      * Display the question selector dialogue.
      */
     displayDialogue: function() {
-        var loader, dialogue, content, submit, elementId;
+        var loader, content, submit, elementId;
 
         this.currentSelection = this.get('host').getSelection();
 
@@ -91,12 +93,14 @@ Y.namespace('M.atto_embedquestion').Button = Y.Base.create('button', Y.M.editor_
             '</div>' +
             '<button class="' + BUTTON + '">' + M.util.get_string('embedqcode', COMPONENTNAME) + '</button>';
 
-        dialogue = this.getDialogue({
-            headerContent: M.util.get_string('pluginname', COMPONENTNAME),
-            focusAfterHide: true,
-            bodyContent: content
-        }, true);
-        dialogue.show();
+        if (!Y.M.atto_embedquestion.dialogue) {
+            Y.M.atto_embedquestion.dialogue = this.getDialogue({
+                headerContent: M.util.get_string('pluginname', COMPONENTNAME),
+                focusAfterHide: true,
+                bodyContent: content
+            }, true);
+        }
+        Y.M.atto_embedquestion.dialogue.show();
 
         // Note it is important to only set the wrapper after the dialogue has been inserted in the DOM.
         elementId = this.get('elementid');
@@ -117,42 +121,17 @@ Y.namespace('M.atto_embedquestion').Button = Y.Base.create('button', Y.M.editor_
 
     /**
      * Insert the selected question code into the editor textarea.
+     *
+     * @param {string} qcode The embed question code for inserting.
      */
-    insertQcode: function() {
-        var formData, qcode, host, dialogueid;
-
-        dialogueid = this.getDialogue().get('id');
+    insertQcode: function(qcode) {
+        var host, dialogueid;
 
         // Hide the dialogue.
         this.getDialogue({
             focusAfterHide: null
         }).hide();
 
-        formData = this.qForm.getQformData();//TODO!
-
-        // Try removing the form from the dialogue so it cannot be confused with any other dialogue form.
-        Y.one('#' + dialogueid + ' div.' + WRAPPER + ' form').remove(true);
-
-        // need to do ajax to get $embedcode = question_options::get_embed_from_form_options($fromform); (filter/embedquestion/classes/question_options.php)
-        // with the critical bits $fromform->categoryidnumber and $fromform->questionidnumber
-        // {Q{QC1/Q2|50fce86349f0f7f952f8a0373eec883a0147e76a44945cc91ce68a207117b7b8}Q}
-        // Maybe this could be done in the AMD code?
-        // Maybe the AMD code could override the action on the form button to save creating our own button?
-        qcode = '{Q{' + formData.catidnum + '/' + formData.queidnum + '|';
-        qcode += formData.behaviour ? formData.behaviour + '|' : '';
-        qcode += formData.maxmark ? formData.maxmark + '|' : '';
-        qcode += formData.variant ? formData.variant + '|' : '';
-        qcode += formData.correctness ? formData.correctness + '|' : '';
-        qcode += formData.marks ? formData.marks + '|' : '';
-        qcode += formData.markdp ? formData.markdp + '|' : '';
-        qcode += formData.feedback ? formData.feedback + '|' : '';
-        qcode += formData.generalfeedback ? formData.generalfeedback + '|' : '';
-        qcode += formData.rightanswer ? formData.rightanswer + '|' : '';
-        qcode += formData.history ? formData.history + '|' : '';
-
-        qcode += formData.token + '}Q}';
-
-        // The rest of this code works.
         host = this.get('host');
 
         // Focus on the last point.
