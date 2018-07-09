@@ -72,7 +72,6 @@ define(['jquery', 'core/notification', 'core/fragment', 'core/templates'], funct
 
         getQformData: function () {
             var out = {};
-            console.log(priv.rootNode);
             out.catidnum = priv.rootNode.find('#id_categoryidnumber').val();//TODO!
             out.queidnum = priv.rootNode.find('#id_questionidnumber').val();
             out.behaviour = (priv.rootNode.find('#id_behaviour').val()) ? 'behaviour=' + priv.rootNode.find('#id_behaviour').val() : '';
@@ -85,8 +84,6 @@ define(['jquery', 'core/notification', 'core/fragment', 'core/templates'], funct
             out.generalfeedback = (priv.rootNode.find('#id_generalfeedback').val()) ? 'generalfeedback=' + priv.rootNode.find('#id_generalfeedback').val() : '';
             out.rightanswer = (priv.rootNode.find('#id_rightanswer').val()) ? 'rightanswer=' + priv.rootNode.find('#id_rightanswer').val() : '';
             out.history = (priv.rootNode.find('#id_history').val()) ? 'history=' + priv.rootNode.find('#id_history').val() : '';
-            out.token = '12345...';
-
             return out;
         }
     };
