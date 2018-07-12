@@ -51,6 +51,7 @@ Y.namespace('M.atto_embedquestion').Button = Y.Base.create('button', Y.M.editor_
      */
     doneOnce: false,
     qForm: false,
+    thisHack: null,
 
     initializer: function() {
         var contextId, elementId;
@@ -75,6 +76,8 @@ Y.namespace('M.atto_embedquestion').Button = Y.Base.create('button', Y.M.editor_
             // Use just one dialogue, not one per instance of the Atto button.
             Y.M.atto_embedquestion.dialogue = false;
         });
+        thisHack = this;
+        document.addEventListener('responseForYUI', this.insertQcode);
     },
 
     /**
@@ -88,10 +91,7 @@ Y.namespace('M.atto_embedquestion').Button = Y.Base.create('button', Y.M.editor_
         // The wrapper div's loading icon will be replaced with form contents.
         // The submit button needs to be 'outside' the form to avoid an ajax submission of the form.
         loader = M.util.image_url('y/loading');
-        content = '<div class="' + WRAPPER + '">' +
-            '<img class="icon " src="' + loader + '" alt="Loading..." title="Loading...">' +
-            '</div>' +
-            '<button class="' + BUTTON + '">' + M.util.get_string('embedqcode', COMPONENTNAME) + '</button>';
+        content = '<div class="' + WRAPPER + '"><img class="icon " src="' + loader + '" alt="Loading..." title="Loading..."></div>';
 
         if (!Y.M.atto_embedquestion.dialogue) {
             Y.M.atto_embedquestion.dialogue = this.getDialogue({
@@ -113,8 +113,6 @@ Y.namespace('M.atto_embedquestion').Button = Y.Base.create('button', Y.M.editor_
 
         // Set the listener for the submit button (once).
         if (!this.doneOnce) {
-            submit = Y.all('.' + BUTTON);
-            submit.on('click', this.insertQcode, this);
             this.doneOnce = true;
         }
     },
@@ -127,20 +125,25 @@ Y.namespace('M.atto_embedquestion').Button = Y.Base.create('button', Y.M.editor_
     insertQcode: function(qcode) {
         var host, dialogueid;
 
+        console.log(qcode);
+        console.log(this);
+        console.log(thisHack);
+        console.log(Y);
+
         // Hide the dialogue.
-        this.getDialogue({
+        thisHack.getDialogue({
             focusAfterHide: null
         }).hide();
 
-        host = this.get('host');
+        host = thisHack.get('host');
 
         // Focus on the last point.
-        host.setSelection(this.currentSelection);
+        host.setSelection(thisHack.currentSelection);
 
-        host.insertContentAtFocusPoint(qcode);
+        host.insertContentAtFocusPoint(qcode.detail.code);
 
         // And mark the text area as updated.
-        this.markUpdated();
+        thisHack.markUpdated();
     }
 }, {
     ATTRS: {

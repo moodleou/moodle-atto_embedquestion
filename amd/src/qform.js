@@ -20,7 +20,7 @@
  * @copyright  2018 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-define(['jquery', 'core/notification', 'core/fragment', 'core/templates'], function($, Notification, Fragment, Templates) {
+define(['jquery', 'core/notification', 'core/fragment', 'core/templates', 'core/ajax'], function($, Notification, Fragment, Templates, Ajax) {
     'use strict';
     var t, priv;
 
@@ -65,26 +65,44 @@ define(['jquery', 'core/notification', 'core/fragment', 'core/templates'], funct
                 Templates.replaceNodeContents(node, html, js);
                 node.fadeIn("fast", function () {
                     promise.resolve();
+                    t.formSubmitListener();
                 });
             });
             return promise.promise();
         },
 
-        getQformData: function () {
-            var out = {};
-            out.catidnum = priv.rootNode.find('#id_categoryidnumber').val();//TODO!
-            out.queidnum = priv.rootNode.find('#id_questionidnumber').val();
-            out.behaviour = (priv.rootNode.find('#id_behaviour').val()) ? 'behaviour=' + priv.rootNode.find('#id_behaviour').val() : '';
-            out.maxmark = (priv.rootNode.find('#id_maxmark').val()) ? 'maxmark=' + priv.rootNode.find('#id_maxmark').val() : '';
-            out.variant = (priv.rootNode.find('#id_variant').val()) ? 'variant=' + priv.rootNode.find('#id_varian').val() : '';
-            out.correctness = (priv.rootNode.find('#id_correctness').val()) ? 'correctness=' + priv.rootNode.find('#id_correctness').val() : '';
-            out.marks = (priv.rootNode.find('#id_marks').val()) ? 'marks=' + priv.rootNode.find('#id_marks').val() : '';
-            out.markdp = (priv.rootNode.find('#id_markdp').val()) ? 'markdp=' + priv.rootNode.find('#id_markdp').val() : '';
-            out.feedback = (priv.rootNode.find('#id_feedback').val()) ? 'feedback=' + priv.rootNode.find('#id_feedback').val() : '';
-            out.generalfeedback = (priv.rootNode.find('#id_generalfeedback').val()) ? 'generalfeedback=' + priv.rootNode.find('#id_generalfeedback').val() : '';
-            out.rightanswer = (priv.rootNode.find('#id_rightanswer').val()) ? 'rightanswer=' + priv.rootNode.find('#id_rightanswer').val() : '';
-            out.history = (priv.rootNode.find('#id_history').val()) ? 'history=' + priv.rootNode.find('#id_history').val() : '';
-            return out;
+        formSubmitListener : function () {
+            var button = $('#embedqform input[id=id_submitbutton][name=submitbutton]');
+            button.parent().parent().parent().parent().removeClass('hidden');
+            button.on('click', t.getEmbedCode);
+        },
+
+        getEmbedCode : function (e) {
+            e.preventDefault();
+            Ajax.call([{
+                methodname: 'filter_embedquestion_get_embed_code',
+                args: {
+                    courseid: $('input[name=courseid]').val(),
+                    categoryidnumber: $('select#id_categoryidnumber').val(),
+                    questionidnumber: $('select#id_questionidnumber').val(),
+                    behaviour: $('select#id_behaviour').val(),
+                    maxmark: $('input#id_maxmark').val(),
+                    variant: $('input#id_variant').val(),
+                    correctness: $('select#id_correctness').val(),
+                    marks: $('select#id_marks').val(),
+                    markdp: $('select#id_markdp').val(),
+                    feedback: $('select#id_feedback').val(),
+                    generalfeedback: $('select#id_generalfeedback').val(),
+                    rightanswer: $('select#id_rightanswer').val(),
+                    history: $('select#id_history').val()
+                }
+            }])[0].done(t.passEmbedCode);
+        },
+
+        passEmbedCode: function (response) {
+            //Create a custom event with the response in it for YUI to consume.
+            var event = new CustomEvent('responseForYUI', {detail: {code: response.embedcode}});
+            document.dispatchEvent(event);
         }
     };
 
