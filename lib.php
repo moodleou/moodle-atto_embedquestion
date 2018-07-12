@@ -72,6 +72,6 @@ function atto_embedquestion_output_fragment_questionselector($args) {
     global $CFG;
     require_once($CFG->dirroot . '/filter/embedquestion/classes/form/embed_options_form.php');
     $context = context::instance_by_id($args['contextId']);
-    $mform = new embed_options_form(null, ['context' => $context, 'nosubmitbutton' => true]);
+    $mform = new embed_options_form(null, ['context' => $context]);
     return $mform->render();
 }

@@ -1,3 +1,23 @@
+/* Make the dialogue size sensible. */
 .moodle-dialogue-base .moodle-dialogue-wrap {
     width: 600px;
+}
+
+/* Improve the form layout. */
+.moodle-dialogue-base #embedqform #fitem_id_submitbutton {
+    padding: 0;
+    margin: 0;
+}
+.moodle-dialogue-base #embedqform .fdescription.required {
+    display: none;
+}
+
+/*
+ * There is a nasty conflict between the core style rule
+ * '.moodle-dialogue-base .hidden' for hidden dialogues,
+ * and formslib's concept of invisible fieldsets that are
+ * done with <fieldset class="hidden">. We want this visible!
+ */
+.moodle-dialogue-base #embedqform fieldset.hidden {
+    display: inherit;
 }
