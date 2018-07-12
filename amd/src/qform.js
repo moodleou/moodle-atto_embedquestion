@@ -98,9 +98,9 @@ define(['jquery', 'core/notification', 'core/fragment', 'core/templates', 'core/
             }])[0].done(t.passEmbedCode);
         },
 
-        passEmbedCode: function (response) {
+        passEmbedCode: function (embedcode) {
             // Create a custom event with the response in it for YUI to consume.
-            var event = new CustomEvent('responseForYUI', {detail: {code: response.embedcode}});
+            var event = new CustomEvent('responseForYUI', {detail: {code: embedcode}});
             document.dispatchEvent(event);
         }
     };
