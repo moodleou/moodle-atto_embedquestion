@@ -14,9 +14,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /*
- * @package    atto_embedquestion
- * @copyright  2018 The Open University
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   atto_embedquestion
+ * @copyright 2018 The Open University
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 /**
@@ -87,7 +87,8 @@ Y.namespace('M.atto_embedquestion').Button = Y.Base.create('button', Y.M.editor_
         this.currentSelection = this.get('host').getSelection();
 
         // The wrapper div's loading icon will be replaced with form contents.
-        // The submit button needs to be 'outside' the form to avoid an ajax submission of the form.
+        // The submit button needs to be 'outside' the form to avoid an ajax
+        // submission of the form.
         loader = M.util.image_url('y/loading');
         content = '<div class="' + WRAPPER + '"><img class="icon " src="' + loader + '" alt="Loading..." title="Loading..."></div>';
 
@@ -100,7 +101,8 @@ Y.namespace('M.atto_embedquestion').Button = Y.Base.create('button', Y.M.editor_
         }
         Y.M.atto_embedquestion.dialogue.show();
 
-        // Note it is important to only set the wrapper after the dialogue has been inserted in the DOM.
+        // Note it is important to only set the wrapper after the dialogue has
+        // been inserted in the DOM.
         elementId = this.get('elementid');
         if (!this.doneOnce) {
             // Capture the reference to this version of the AMD code's form.

@@ -17,9 +17,9 @@
 /**
  * Atto text editor emoticon plugin version file.
  *
- * @package    atto_embedquestion
- * @copyright  2018 The Open University
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   atto_embedquestion
+ * @copyright 2018 The Open University
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();

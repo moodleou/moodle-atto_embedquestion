@@ -17,9 +17,9 @@
 /**
  * Atto text editor integration file.
  *
- * @package    atto_embedquestion
- * @copyright  2018 The Open University
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   atto_embedquestion
+ * @copyright 2018 The Open University
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -42,18 +42,19 @@ function atto_embedquestion_strings_for_js() {
  * @param string $elementid
  * @param stdClass $options - the options for the editor, including the context.
  * @param stdClass $fpoptions - unused.
+ * @return array of params to pass to the JavaScript.
  */
 function atto_embedquestion_params_for_js($elementid, $options, $fpoptions) {
     $context = $options['context'];
     if (!$context) {
         return array('enablebutton' => false, 'contextid' => null, 'elementid' => null);
     }
+
     // Get the course context, this is the only context we use.
-    $context = $context->get_course_context(true);
-    if (!$context) {
-        return array('enablebutton' => false, 'contextid' => null, 'elementid' => null);
-    }
-    $enablebutton = has_capability('moodle/question:useall', $context);
+    $context = context_course::instance(
+            \filter_embedquestion\utils::get_relevant_courseid($context));
+    $enablebutton = has_any_capability(
+            ['moodle/question:useall', 'moodle/question:usemine'], $context);
 
     return array('enablebutton' => $enablebutton, 'contextid' => $context->id, 'elementid' => $elementid);
 }

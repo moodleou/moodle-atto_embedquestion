@@ -16,9 +16,9 @@
 /**
  * Manages the question selection form.
  *
- * @package    atto_embedquestion
- * @copyright  2018 The Open University
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   atto_embedquestion
+ * @copyright 2018 The Open University
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 define(['jquery', 'core/notification', 'core/fragment', 'core/templates', 'core/ajax'], function($, Notification, Fragment, Templates, Ajax) {
     'use strict';
@@ -47,7 +47,6 @@ define(['jquery', 'core/notification', 'core/fragment', 'core/templates', 'core/
 
         /**
          * This uses an ajax function to add the question selection form to the dialogue.
-         *
          */
         insertQform: function() {
             var args = {};
@@ -100,7 +99,7 @@ define(['jquery', 'core/notification', 'core/fragment', 'core/templates', 'core/
         },
 
         passEmbedCode: function (response) {
-            //Create a custom event with the response in it for YUI to consume.
+            // Create a custom event with the response in it for YUI to consume.
             var event = new CustomEvent('responseForYUI', {detail: {code: response.embedcode}});
             document.dispatchEvent(event);
         }
