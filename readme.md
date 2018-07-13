@@ -14,4 +14,4 @@ This plugin was created by the Open University, UK. http://www.open.ac.uk/
 
 This plugin should be compatible with Moodle 3.4+.
 
-See the [installation instructions for the embed questions filter](https://github.com/moodleou/moodle-atto_embedquestion).
+See the [installation instructions for the embed questions filter](https://github.com/moodleou/moodle-filter_embedquestion/blob/master/readme.md).
