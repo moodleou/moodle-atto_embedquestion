@@ -32,14 +32,14 @@ define([
     Notification,
     Fragment,
     Templates,
-    Ajax)
-{
+    Ajax
+) {
     'use strict';
 
     /**
      * Constructor for an object that handles one occurrence of showing the dialogue.
      *
-     * @param {EditorPlugin} button the editor toolbar button that has just been clicked.
+     * @param {EditorPlugin} button - the editor toolbar button that has just been clicked.
      */
     function DialogueHandler(button) {
         var currentSelection, dialogue, existingCode;
@@ -64,16 +64,24 @@ define([
 
         // Replace with the form.
         Fragment.loadFragment('atto_embedquestion', 'questionselector', button.get('contextid'),
-                {contextId: button.get('contextid'), embedCode: existingCode}).done(function (html, js) {
+                {contextId: button.get('contextid'), embedCode: existingCode}).done(function(html, js) {
                     niceReplaceNodeContents($('.atto_embedquestion-wrap'), html, js);
                 }
                 ).fail(Notification.exception);
 
+        /**
+         * This function fades out one lot of content and fades in some new content.
+         *
+         * @param {JQuery} node - Element or selector to replace.
+         * @param {String} html - HTML to insert / replace.
+         * @param {String} js - Javascript to run after the insertion.
+         * @returns {Promise} - a promise that resolves when the animation is complete.
+         */
         function niceReplaceNodeContents(node, html, js) {
             var promise = $.Deferred();
-            node.fadeOut("fast", function () {
+            node.fadeOut("fast", function() {
                 Templates.replaceNodeContents(node, html, js);
-                node.fadeIn("fast", function () {
+                node.fadeIn("fast", function() {
                     promise.resolve();
                     $('#embedqform #id_submitbutton').on('click', getEmbedCode);
                 });
@@ -81,6 +89,13 @@ define([
             return promise.promise();
         }
 
+        /**
+         * Handler for when the form button is clicked.
+         *
+         * Make an AJAX request ot the server to get the embed code.
+         *
+         * @param {Event} e - the click event.
+         */
         function getEmbedCode(e) {
             e.preventDefault();
             Ajax.call([{
@@ -103,6 +118,11 @@ define([
             }])[0].done(insertEmbedCode);
         }
 
+        /**
+         * Handles when we get the embed code from the AJAX request.
+         *
+         * @param {String} embedCode - the embed code to insert.
+         */
         function insertEmbedCode(embedCode) {
             var dialogue, host, parent, text, existingCode;
 
@@ -144,9 +164,9 @@ define([
          * Show the dialogue when the button in a particular editor was clicked,
          * then handle the interaction with it.
          *
-         * @param {EditorPlugin} button the editor toolbar button that has just been clicked.
+         * @param {EditorPlugin} button - the editor toolbar button that has just been clicked.
          */
-        showDialogueFor: function (button) {
+        showDialogueFor: function(button) {
             new DialogueHandler(button);
         }
     };

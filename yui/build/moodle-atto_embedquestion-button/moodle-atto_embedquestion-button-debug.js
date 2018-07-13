@@ -67,7 +67,7 @@ Y.namespace('M.atto_embedquestion').Button = Y.Base.create('button', Y.M.editor_
             headerContent: M.util.get_string('pluginname', 'atto_embedquestion'),
             focusAfterHide: true
         }, true);
-        dialogue.on('visibleChange',function(e) {
+        dialogue.on('visibleChange', function(e) {
             if (!e.newVal) {
                 // Been hidden, so blank dialogue contents.
                 dialogue.set('bodyContent', '');
@@ -150,6 +150,8 @@ Y.namespace('M.atto_embedquestion').Button = Y.Base.create('button', Y.M.editor_
                 // Update the startIndex to match the end of the current match so that we can continue hunting
                 // for further matches.
                 startIndex = end;
+
+                return false;
             }
         }, this);
 
