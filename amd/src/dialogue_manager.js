@@ -42,7 +42,7 @@ define([
      * @param {EditorPlugin} button the editor toolbar button that has just been clicked.
      */
     function DialogueHandler(button) {
-        var currentSelection, dialogue;
+        var currentSelection, dialogue, existingCode;
 
         currentSelection = button.get('host').getSelection();
 
@@ -56,9 +56,14 @@ define([
                 '</div>');
         dialogue.show();
 
+        existingCode = button.getEmbedCodeAtSelection();
+        if (existingCode) {
+            existingCode = existingCode.embedCode;
+        }
+
         // Replace with the form.
         Fragment.loadFragment('atto_embedquestion', 'questionselector', button.get('contextid'),
-                {contextId: button.get('contextid')}).done(function (html, js) {
+                {contextId: button.get('contextid'), embedCode: existingCode}).done(function (html, js) {
             niceReplaceNodeContents($('.atto_embedquestion-wrap'), html, js);
         }).fail(Notification.exception);
 
@@ -97,24 +102,32 @@ define([
         }
 
         function insertEmbedCode(embedCode) {
-            var dialogue, host;
+            var dialogue, host, parent, text, existingCode;
 
             // Hide the dialogue and blank the contents.
             dialogue = button.getDialogue({
                 focusAfterHide: null
             });
             dialogue.hide();
-            dialogue.set('bodyContent', '');
 
             host = button.get('host');
 
             // Focus on the last point.
             host.setSelection(currentSelection);
 
-            // Insert the embed code.
-            host.insertContentAtFocusPoint(embedCode);
+            existingCode = button.getEmbedCodeAtSelection();
+            if (existingCode) {
+                // Replace the existing code.
+                parent = host.getSelectionParentNode();
+                text = parent.textContent;
+                parent.textContent = text.slice(0, existingCode.start) +
+                        embedCode + text.slice(existingCode.end);
+            } else {
+                // Otherwise insert the embed code.
+                host.insertContentAtFocusPoint(embedCode);
+            }
 
-            // And mark the text area as updated.
+            // Mark the text area as updated.
             button.markUpdated();
         }
     }
