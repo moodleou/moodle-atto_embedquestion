@@ -33,7 +33,7 @@ use filter_embedquestion\form\embed_options_form;
 function atto_embedquestion_strings_for_js() {
     global $PAGE;
 
-    $PAGE->requires->strings_for_js(['pluginname', 'embedqcode'], 'atto_embedquestion');
+    $PAGE->requires->strings_for_js(['pluginname', 'embedqcode', 'loading'], 'atto_embedquestion');
 }
 
 /**

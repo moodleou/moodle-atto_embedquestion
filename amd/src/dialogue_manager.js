@@ -52,7 +52,8 @@ define([
             focusAfterHide: true
         }, true);
         dialogue.set('bodyContent', '<div class="atto_embedquestion-wrap">' +
-                '<img class="icon" src="' + M.util.image_url('y/loading') + '" alt="Loading...">' +
+                '<img class="icon" src="' + M.util.image_url('y/loading') + '" alt="' +
+                M.util.get_string('loading', 'atto_embedquestion') + '">' +
                 '</div>');
         dialogue.show();
 
@@ -64,8 +65,9 @@ define([
         // Replace with the form.
         Fragment.loadFragment('atto_embedquestion', 'questionselector', button.get('contextid'),
                 {contextId: button.get('contextid'), embedCode: existingCode}).done(function (html, js) {
-            niceReplaceNodeContents($('.atto_embedquestion-wrap'), html, js);
-        }).fail(Notification.exception);
+                    niceReplaceNodeContents($('.atto_embedquestion-wrap'), html, js);
+                }
+                ).fail(Notification.exception);
 
         function niceReplaceNodeContents(node, html, js) {
             var promise = $.Deferred();

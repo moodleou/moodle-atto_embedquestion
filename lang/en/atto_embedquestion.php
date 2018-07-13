@@ -22,6 +22,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$string['embedqcode'] = 'Embed question code';
+$string['loading'] = 'Loading...';
 $string['pluginname'] = 'Embed question';
 $string['privacy:metadata'] = 'The Atto Embed question plugin does not store any personal data.';
-$string['embedqcode'] = 'Embed question code';
