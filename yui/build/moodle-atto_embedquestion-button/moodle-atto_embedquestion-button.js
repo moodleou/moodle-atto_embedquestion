@@ -151,9 +151,9 @@ Y.namespace('M.atto_embedquestion').Button = Y.Base.create('button', Y.M.editor_
                 // Update the startIndex to match the end of the current match so that we can continue hunting
                 // for further matches.
                 startIndex = end;
-
-                return false;
             }
+
+            return false;
         }, this);
 
         return returnValue;
