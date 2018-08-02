@@ -63,6 +63,7 @@ Y.namespace('M.atto_embedquestion').Button = Y.Base.create('button', Y.M.editor_
         // but with the same ids, breaks things.)
         dialogue = this.getDialogue({
             headerContent: M.util.get_string('pluginname', 'atto_embedquestion'),
+            width: '600px',
             focusAfterHide: true
         }, true);
         dialogue.on('visibleChange', function(e) {
