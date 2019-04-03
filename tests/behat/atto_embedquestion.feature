@@ -1,4 +1,4 @@
-@ou @ou_vle @editor @editor_atto @atto @atto_embedquestion
+@ou @ou_vle @editor @editor_atto @atto @atto_embedquestion @filter_embedquestion
 Feature: Embed question in the atto editor
   In order to encourage students interacting with ativity and learning from it
   As a teacher
@@ -17,11 +17,11 @@ Feature: Embed question in the atto editor
       | user    | course | role           |
       | teacher | C1     | editingteacher |
     And the following "question categories" exist:
-      | contextlevel | reference | name                      |
-      | Course       | C1        | Test questions [ID:embed] |
+      | contextlevel | reference | name           | idnumber |
+      | Course       | C1        | Test questions | embed |
     And the following "questions" exist:
-      | questioncategory          | qtype     | name                      |
-      | Test questions [ID:embed] | truefalse | First question [ID:test1] |
+      | questioncategory | qtype     | name           | idnumber |
+      | Test questions   | truefalse | First question | test1    |
     And the "embedquestion" filter is "on"
     And I log in as "teacher"
 
@@ -34,8 +34,8 @@ Feature: Embed question in the atto editor
     And I set the field "Description" to "Test page description"
     And I set the field "content" to "Test page content"
     And I click on "Embed question" "button"
-    And I set the field "Question category" to "Test questions [ID:embed] (1)"
-    And I set the field "id_questionidnumber" to "First question [ID:test1]"
+    And I set the field "Question category" to "Test questions (1)"
+    And I set the field "id_questionidnumber" to "First question"
     And I click on "Embed question" "button" in the "Embed question" "dialogue"
     Then I should see "{Q{embed/test1|"
     And I should see "}Q}Test page description"
