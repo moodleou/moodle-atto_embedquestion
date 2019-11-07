@@ -77,11 +77,11 @@ function atto_embedquestion_output_fragment_questionselector($args) {
     $currentvalue = $args['embedCode'];
     if ($currentvalue && preg_match(filter_embedquestion::get_filter_regexp(), $currentvalue, $matches)) {
 
-        list($categoryidnumber, $questionidnumber, $toform) =
+        list($embedid, $toform) =
                 filter_embedquestion::parse_embed_code($matches[1]);
-        if ($categoryidnumber !== false) {
-            $toform['questionidnumber'] = $questionidnumber;
-            $toform['categoryidnumber'] = $categoryidnumber;
+        if ($embedid !== null) {
+            $toform['questionidnumber'] = $embedid->questionidnumber;
+            $toform['categoryidnumber'] = $embedid->categoryidnumber;
             $mform->set_data($toform);
         }
     }
