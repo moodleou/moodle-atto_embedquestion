@@ -20,17 +20,17 @@ cache:
 
 matrix:
   include:
-#    - php: 7.2 # Master build not currently reliable following the JS build changes.
-#      env:
-#      - MOODLE_BRANCH=master
-#      - DB=mysqli
+    - php: 7.3
+      env:
+      - MOODLE_BRANCH=master
+      - DB=mysqli
 
-    - php: 7.1
+    - php: 7.2
       env:
       - MOODLE_BRANCH=MOODLE_37_STABLE
       - DB=pgsql
 
-    - php: 7.0
+    - php: 7.1
       env:
       - MOODLE_BRANCH=MOODLE_36_STABLE
       - DB=mysqli
@@ -40,7 +40,7 @@ before_install:
   - nvm install 8.9
   - nvm use 8.9
   - cd ../..
-  - composer create-project -n --no-dev --prefer-dist moodlerooms/moodle-plugin-ci ci ^2
+  - composer create-project -n --no-dev --prefer-dist moodlerooms/moodle-plugin-ci ci
   - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
 
 install:
@@ -55,6 +55,6 @@ script:
   - moodle-plugin-ci validate
   - moodle-plugin-ci savepoints
   - moodle-plugin-ci mustache
-  - moodle-plugin-ci grunt
+  - moodle-plugin-ci grunt || [ "$MOODLE_BRANCH" = 'master' ]
   - moodle-plugin-ci phpunit
   - moodle-plugin-ci behat --profile chrome || true # Behat not currently working due to Chrome version. Ignore failure.

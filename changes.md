@@ -1,5 +1,9 @@
 # Change log for the embed questions Atto editor plugin
 
+## Changes in 1.4
+
+* Internal changes because of the recent changes in the filter code.
+
 
 ## Changes in 1.3
 
