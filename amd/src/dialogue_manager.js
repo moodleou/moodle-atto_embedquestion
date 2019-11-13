@@ -64,8 +64,9 @@ define([
 
         // Replace with the form.
         Fragment.loadFragment('atto_embedquestion', 'questionselector', button.get('contextid'),
-                {contextId: button.get('contextid'), embedCode: existingCode}).done(function(html, js) {
-                    niceReplaceNodeContents($('.atto_embedquestion-wrap'), html, js);
+                {contextId: button.get('contextid'), embedCode: existingCode}
+                ).done(function(html, js) {
+                    niceReplaceNodeContents($('.atto_embedquestion-wrap'), html, js, dialogue);
                 }
                 ).fail(Notification.exception);
 
@@ -75,15 +76,17 @@ define([
          * @param {JQuery} node - Element or selector to replace.
          * @param {String} html - HTML to insert / replace.
          * @param {String} js - Javascript to run after the insertion.
+         * @param {dialogue} dialogue - YUI dialogue to resize when all is done.
          * @returns {Promise} - a promise that resolves when the animation is complete.
          */
-        function niceReplaceNodeContents(node, html, js) {
+        function niceReplaceNodeContents(node, html, js, dialogue) {
             var promise = $.Deferred();
             node.fadeOut("fast", function() {
                 Templates.replaceNodeContents(node, html, js);
                 node.fadeIn("fast", function() {
                     promise.resolve();
                     $('#embedqform #id_submitbutton').on('click', getEmbedCode);
+                    dialogue.centerDialogue();
                 });
             });
             return promise.promise();
