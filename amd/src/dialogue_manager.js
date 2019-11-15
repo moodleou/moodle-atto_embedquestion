@@ -76,20 +76,40 @@ define([
          * @param {JQuery} node - Element or selector to replace.
          * @param {String} html - HTML to insert / replace.
          * @param {String} js - Javascript to run after the insertion.
-         * @param {dialogue} dialogue - YUI dialogue to resize when all is done.
          * @returns {Promise} - a promise that resolves when the animation is complete.
          */
-        function niceReplaceNodeContents(node, html, js, dialogue) {
+        function niceReplaceNodeContents(node, html, js) {
             var promise = $.Deferred();
             node.fadeOut("fast", function() {
                 Templates.replaceNodeContents(node, html, js);
                 node.fadeIn("fast", function() {
                     promise.resolve();
                     $('#embedqform #id_submitbutton').on('click', getEmbedCode);
-                    dialogue.centerDialogue();
+                    setupCentreing();
                 });
             });
             return promise.promise();
+        }
+
+        /**
+         * Called after the form in the dialogue has finished loading.
+         *
+         * Centre the dialogue now, and ensure it re-centres whenever a
+         * form section is expanded or collapsed.
+         */
+        function setupCentreing() {
+            dialogue.centerDialogue();
+            var observer = new MutationObserver(dialogueResized);
+            $('#embedqform fieldset.collapsible').each(function(index, node) {
+                observer.observe(node, { attributes: true, attributeFilter: ['class'] });
+            });
+        }
+
+        /**
+         * Re-centre the dialogue.
+         */
+        function dialogueResized() {
+            dialogue.centerDialogue();
         }
 
         /**
