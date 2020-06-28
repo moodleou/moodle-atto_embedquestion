@@ -1,5 +1,10 @@
 # Change log for the embed questions Atto editor plugin
 
+## Changes in 1.6
+
+* To match updates to other plugins in the set.
+
+
 ## Changes in 1.5
 
 * Fix bug where the dialogue would not fit on screen if you expanded all sections

@@ -1,4 +1,4 @@
-# The embed questions Atto editor plugin [![Build Status](https://travis-ci.org/moodleou/moodle-atto_embedquestion.svg?branch=master)](https://travis-ci.org/moodleou/moodle-atto_embedquestion)
+# The embed questions Atto editor plugin [![Build Status](https://travis-ci.com/moodleou/moodle-atto_embedquestion.svg?branch=master)](https://travis-ci.com/moodleou/moodle-atto_embedquestion)
 
 This Atto editor plugin makes it much easier to use the [embed questions filter](https://moodle.org/plugins/filter_embedquestion).
 

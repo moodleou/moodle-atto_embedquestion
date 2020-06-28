@@ -28,7 +28,7 @@ $plugin->version   = 2019111500;
 $plugin->requires  = 2018120300;
 $plugin->component = 'atto_embedquestion';
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = '1.5 for Moodle 3.6+';
+$plugin->release   = '1.6 for Moodle 3.6+';
 
 $plugin->dependencies = ['filter_embedquestion' => 2020061000];
 
