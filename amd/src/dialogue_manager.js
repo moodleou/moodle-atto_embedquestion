@@ -136,7 +136,8 @@ define([
                     feedback: $('select#id_feedback').val(),
                     generalfeedback: $('select#id_generalfeedback').val(),
                     rightanswer: $('select#id_rightanswer').val(),
-                    history: $('select#id_history').val()
+                    history: $('select#id_history').val(),
+                    forcedlanguage: $('select#id_forcedlanguage').val() || ''
                 }
             }])[0].done(insertEmbedCode);
         }
