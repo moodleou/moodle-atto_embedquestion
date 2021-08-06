@@ -1,5 +1,10 @@
 # Change log for the embed questions Atto editor plugin
 
+## Changes in 1.7
+
+* Change to support the new language feature in the filter.
+
+
 ## Changes in 1.6
 
 * To match updates to other plugins in the set.
