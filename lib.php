@@ -82,6 +82,8 @@ function atto_embedquestion_output_fragment_questionselector($args) {
         if ($embedid !== null) {
             $toform['questionidnumber'] = $embedid->questionidnumber;
             $toform['categoryidnumber'] = $embedid->categoryidnumber;
+            // Decode iframedescription data to form.
+            $toform['iframedescription'] = base64_decode($toform['iframedescription']);
             $mform->set_data($toform);
         }
     }

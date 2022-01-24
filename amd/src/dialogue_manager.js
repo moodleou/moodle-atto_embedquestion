@@ -84,7 +84,7 @@ define([
                 node.fadeIn("fast", function() {
                     promise.resolve();
                     $('#embedqform #id_submitbutton').on('click', getEmbedCode);
-                    setupCentreing();
+                    setupCentring();
                 });
             });
             return promise.promise();
@@ -96,7 +96,7 @@ define([
          * Centre the dialogue now, and ensure it re-centres whenever a
          * form section is expanded or collapsed.
          */
-        function setupCentreing() {
+        function setupCentring() {
             dialogue.centerDialogue();
             var observer = new MutationObserver(dialogueResized);
             $('#embedqform fieldset.collapsible').each(function(index, node) {
@@ -120,12 +120,30 @@ define([
          */
         function getEmbedCode(e) {
             e.preventDefault();
+            let iframedescription = $('input#id_iframedescription').val();
+            let questionidnumber = $('select#id_questionidnumber').val();
+
+            // Required value of questionidnumber.
+            // Note that the form also validates this, and deals with displaying a message to the user.
+            if (!questionidnumber) {
+                return;
+            }
+
+            // Validate iframedescription.
+            // If it is present, then it must have at least 3 characters and a maximum of 100 characters.
+            // (It can be left blank to get the default description.)
+            // Note that the form also validates this, and deals with displaying a message to the user.
+            if (iframedescription.length && (iframedescription.length < 3 || iframedescription.length > 100)) {
+                return;
+            }
+
             Ajax.call([{
                 methodname: 'filter_embedquestion_get_embed_code',
                 args: {
                     courseid: $('input[name=courseid]').val(),
                     categoryidnumber: $('select#id_categoryidnumber').val(),
-                    questionidnumber: $('select#id_questionidnumber').val(),
+                    questionidnumber: questionidnumber,
+                    iframedescription: iframedescription,
                     behaviour: $('select#id_behaviour').val(),
                     maxmark: $('input#id_maxmark').val(),
                     variant: $('input#id_variant').val(),
