@@ -23,13 +23,12 @@ Feature: Embed question in the atto editor
       | questioncategory | qtype     | name           | idnumber |
       | Test questions   | truefalse | First question | test1    |
     And the "embedquestion" filter is "on"
-    And I log in as "teacher"
 
   @javascript
   Scenario: Test using 'Embed question' button
-    When I am on "Course 1" course homepage
+    Given I am on the "Course 1" course page logged in as teacher
     And I turn editing mode on
-    And I add a "page" to section "1"
+    When I add a "page" to section "1"
     And I set the field "Name" to "Test page 01"
     And I set the field "Description" to "Test page description"
     And I set the field "content" to "Test page content"

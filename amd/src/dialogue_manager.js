@@ -17,7 +17,6 @@
  * Manages the question selection form.
  *
  * @module    atto_embedquestion/dialogue_manager
- * @package   atto_embedquestion
  * @copyright 2018 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
