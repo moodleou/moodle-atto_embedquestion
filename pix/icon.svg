@@ -1,26 +1,31 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 22.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1"
-	 id="svg2" inkscape:version="0.91 r13725" sodipodi:docname="icon.svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg"
-	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 16 16"
-	 style="enable-background:new 0 0 16 16;" xml:space="preserve">
-<sodipodi:namedview  bordercolor="#666666" borderopacity="1.0" id="base" inkscape:current-layer="layer1" inkscape:cx="8" inkscape:cy="11.281745" inkscape:document-units="px" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:window-height="674" inkscape:window-maximized="1" inkscape:window-width="1366" inkscape:window-x="0" inkscape:window-y="27" inkscape:zoom="31" pagecolor="#ffffff" showgrid="true" showguides="true" units="px">
-	<inkscape:grid  id="grid4136" type="xygrid"></inkscape:grid>
-</sodipodi:namedview>
-<rect x="2.4" y="6.2" width="2.9" height="2.9"/>
-<g>
-	<path d="M14.3,3.5h-6c-0.4,0-0.7-0.4-0.7-0.8c0-0.3,0.3-0.8,0.7-0.8h6c0.4,0,0.7,0.4,0.7,0.8C15,2.9,14.7,3.5,14.3,3.5z"/>
-</g>
-<g>
-	<path d="M14.3,9.1h-6c-0.4,0-0.7-0.4-0.7-0.8c0-0.3,0.3-0.8,0.7-0.8h6c0.4,0,0.7,0.4,0.7,0.8C15,8.7,14.7,9.1,14.3,9.1z"/>
-</g>
-<g>
-	<polygon points="7.2,0.8 6.2,0 3.2,2.9 1.8,1.4 1,2.4 3.2,4.6 3.4,4.6 3.4,4.6 	"/>
-</g>
-<g>
-	<path d="M14.3,14.7h-6c-0.4,0-0.7-0.4-0.7-0.8c0-0.3,0.3-0.8,0.7-0.8h6c0.4,0,0.7,0.4,0.7,0.8C15,14.3,14.7,14.7,14.3,14.7z"/>
-</g>
-<g>
-	<polygon points="7.2,12.1 6.2,11.2 3.2,14.2 1.8,12.8 1,13.6 3.2,16 3.4,16 3.4,16 	"/>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="18" viewBox="0 0 16 18">
+  <defs>
+    <clipPath id="clip-Embed_question">
+      <rect width="16" height="18"/>
+    </clipPath>
+  </defs>
+  <g id="Embed_question" data-name="Embed question" clip-path="url(#clip-Embed_question)">
+    <rect width="16" height="18" fill="#fff"/>
+    <g id="Group_404" data-name="Group 404" transform="translate(-10377 926)">
+      <rect id="Rectangle_228" data-name="Rectangle 228" width="16" height="18" transform="translate(10377 -926)" fill="#fff"/>
+      <g id="Group_387" data-name="Group 387" transform="translate(10377 -925)">
+        <rect id="Rectangle_227" data-name="Rectangle 227" width="2.9" height="2.9" transform="translate(2.4 6.2)"/>
+        <g id="Group_382" data-name="Group 382">
+          <path id="Path_473" data-name="Path 473" d="M14.3,3.5h-6a.773.773,0,0,1-.7-.8c0-.3.3-.8.7-.8h6a.773.773,0,0,1,.7.8C15,2.9,14.7,3.5,14.3,3.5Z"/>
+        </g>
+        <g id="Group_383" data-name="Group 383">
+          <path id="Path_474" data-name="Path 474" d="M14.3,9.1h-6a.773.773,0,0,1-.7-.8c0-.3.3-.8.7-.8h6a.807.807,0,0,1,0,1.6Z"/>
+        </g>
+        <g id="Group_384" data-name="Group 384">
+          <path id="Path_475" data-name="Path 475" d="M7.2.8,6.2,0l-3,2.9L1.8,1.4,1,2.4,3.2,4.6h.2Z"/>
+        </g>
+        <g id="Group_385" data-name="Group 385">
+          <path id="Path_476" data-name="Path 476" d="M14.3,14.7h-6a.773.773,0,0,1-.7-.8c0-.3.3-.8.7-.8h6a.807.807,0,0,1,0,1.6Z"/>
+        </g>
+        <g id="Group_386" data-name="Group 386">
+          <path id="Path_477" data-name="Path 477" d="M7.2,12.1l-1-.9-3,3L1.8,12.8l-.8.8L3.2,16h.2Z"/>
+        </g>
+      </g>
+    </g>
+  </g>
 </svg>
