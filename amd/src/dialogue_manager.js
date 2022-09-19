@@ -97,8 +97,8 @@ define([
          * form section is expanded or collapsed.
          */
         function setupCentring() {
-            dialogue.centerDialogue();
-            var observer = new MutationObserver(dialogueResized);
+            // TODO we will remove those logic after finish MDL-75781.
+            var observer = new ResizeObserver(dialogueResized);
             $('#embedqform fieldset.collapsible').each(function(index, node) {
                 observer.observe(node, { attributes: true, attributeFilter: ['class'] });
             });
@@ -108,7 +108,11 @@ define([
          * Re-centre the dialogue.
          */
         function dialogueResized() {
-            dialogue.centerDialogue();
+            // When dialog becomes invisible. Do not centering it so we should not scroll lock the screen anymore.
+            let attributes = dialogue.getAttrs();
+            if (attributes.visible !== false) {
+                dialogue.centerDialogue();
+            }
         }
 
         /**
