@@ -14,23 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace atto_embedquestion\privacy;
+
 /**
  * Privacy Subsystem implementation for atto_embedquestion.
  *
  * @package   atto_embedquestion
  * @copyright 2018 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
-namespace atto_embedquestion\privacy;
-defined('MOODLE_INTERNAL') || die();
-
-
-/**
- * Privacy Subsystem for atto_embedquestion implementing null_provider.
- *
- * @copyright  2018 The Open University
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class provider implements \core_privacy\local\metadata\null_provider {
 

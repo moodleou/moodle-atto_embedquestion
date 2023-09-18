@@ -100,7 +100,7 @@ define([
             // TODO we will remove those logic after finish MDL-75781.
             var observer = new ResizeObserver(dialogueResized);
             $('#embedqform fieldset.collapsible').each(function(index, node) {
-                observer.observe(node, { attributes: true, attributeFilter: ['class'] });
+                observer.observe(node, {attributes: true, attributeFilter: ['class']});
             });
         }
 
