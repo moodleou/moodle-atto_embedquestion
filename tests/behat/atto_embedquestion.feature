@@ -28,7 +28,7 @@ Feature: Embed question in the atto editor
   Scenario: Test using 'Embed question' button
     Given I am on the "Course 1" course page logged in as teacher
     And I turn editing mode on
-    When I add a "page" to section "1"
+    And I add a "page" to section "1" using the activity chooser
     And I set the field "Name" to "Test page 01"
     And I set the field "Description" to "Test page description"
     And I set the field "content" to "Test page content"
