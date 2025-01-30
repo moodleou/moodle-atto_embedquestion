@@ -69,16 +69,14 @@ function atto_embedquestion_params_for_js($elementid, $options, $fpoptions) {
  * @return null|string
  */
 function atto_embedquestion_output_fragment_questionselector($args) {
-    global $CFG;
-    require_once($CFG->dirroot . '/filter/embedquestion/filter.php');
     $context = context::instance_by_id($args['contextId']);
     $mform = new embed_options_form(null, ['context' => $context]);
 
     $currentvalue = $args['embedCode'];
-    if ($currentvalue && preg_match(filter_embedquestion::get_filter_regexp(), $currentvalue, $matches)) {
+    if ($currentvalue && preg_match(\filter_embedquestion\text_filter::get_filter_regexp(), $currentvalue, $matches)) {
 
         list($embedid, $toform) =
-                filter_embedquestion::parse_embed_code($matches[1]);
+                \filter_embedquestion\text_filter::parse_embed_code($matches[1]);
         if ($embedid !== null) {
             $toform['questionidnumber'] = $embedid->questionidnumber;
             $toform['categoryidnumber'] = $embedid->categoryidnumber;
