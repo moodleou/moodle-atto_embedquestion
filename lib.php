@@ -47,7 +47,7 @@ function atto_embedquestion_strings_for_js() {
 function atto_embedquestion_params_for_js($elementid, $options, $fpoptions) {
     $context = $options['context'];
     if (!$context) {
-        return array('enablebutton' => false, 'contextid' => null, 'elementid' => null);
+        return ['enablebutton' => false, 'contextid' => null, 'elementid' => null];
     }
 
     // Get the course context, this is the only context we use.
@@ -56,7 +56,7 @@ function atto_embedquestion_params_for_js($elementid, $options, $fpoptions) {
     $enablebutton = has_any_capability(
             ['moodle/question:useall', 'moodle/question:usemine'], $context);
 
-    return array('enablebutton' => $enablebutton, 'contextid' => $context->id, 'elementid' => $elementid);
+    return ['enablebutton' => $enablebutton, 'contextid' => $context->id, 'elementid' => $elementid];
 }
 
 /**
