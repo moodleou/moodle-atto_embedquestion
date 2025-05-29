@@ -1,5 +1,10 @@
 # Change log for the embed questions Atto editor plugin
 
+## Changes in 1.9
+
+* Fix deprecated warning in Moodle 4.5.
+
+
 ## Changes in 1.8
 
 * Minor updates for recent Moodle versions.
