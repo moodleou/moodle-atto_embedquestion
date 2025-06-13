@@ -2,7 +2,12 @@
 
 ## Changes in 1.9
 
-* Fix deprecated warning in Moodle 4.5.
+* Changes to use filter_embedquestion text_filter.
+* An optional "Iframe name" text field has been added for accessibility purposes.
+* High-contrast icons have been added.
+* Fix to display scrollbar when embedded question pop-up form is expanded.
+* Fix some coding style issues.
+* This version is compatible with Moodle 4.5.
 
 
 ## Changes in 1.8

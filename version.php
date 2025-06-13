@@ -25,11 +25,11 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->version   = 2025052900;
-$plugin->requires  = 2020061500;
+$plugin->requires  = 2024042200;
 $plugin->component = 'atto_embedquestion';
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = '1.9 for Moodle 4.5+';
+$plugin->release   = '1.9 for Moodle 4.4+';
 
-$plugin->dependencies = ['filter_embedquestion' => 2022032900];
+$plugin->dependencies = ['filter_embedquestion' => 2025050100];
 
 $plugin->outestssufficient = true;
